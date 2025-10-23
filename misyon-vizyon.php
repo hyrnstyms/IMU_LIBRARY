@@ -1,7 +1,6 @@
 <html>
 	<head>
 		<title>İMÜ Kütüphanesi - Misyon & Vizyon</title>
-		<link rel="shortcut icon" type="image/png" href="/favicon.ico">
 		<link rel="stylesheet" href="css/genel.css">
 	</head>
 	
@@ -17,23 +16,23 @@
 			
 			<div id="menu">
 				<ul>
-					<li><a href="index.html">Ana Sayfa</a></li>
-					<li><a href="hakkimizda.html">Hakkımızda</a></li>
-					<li><a href="misyon-vizyon.html">Misyon & Vizyon</a></li>
-					<li><a href="iletisim.html">İletişim</a></li>
+                    <li><a href="index.php">Ana Sayfa</a></li>
+					<li><a href="hakkimizda.php">Hakkımızda</a></li>
+					<li><a href="misyon-vizyon.php">Misyon & Vizyon</a></li>
+					<li><a href="iletisim.php">İletişim</a></li>
 				</ul>
 			</div>
 		</div>
 		
 		<div id="content">
-			<h1 class="content-title">Misyonumuz ve Vizyonumuz</h1>
+            <h1 class="content-title">Misyonumuz ve Vizyonumuz</h1>
 
-			<h2 class="content-subtitle">Misyonumuz</h2>
+            <h2 class="content-subtitle">Misyonumuz</h2>
 			<p>Üniversitemizin eğitim ve öğretimine destek sağlayan her türlü bilgi kaynağını sağlamak, düzenlemek ve uygun ortamlarda kullanıma sunmak amacıyla hizmet vermek.</p>
 			
 			<br>
 
-			<h2 class="content-subtitle">Vizyonumuz</h2>
+            <h2 class="content-subtitle">Vizyonumuz</h2>
 			<p>Bilgi hizmetleri alanında ulusal ve uluslararası düzeyde öncü, yenilikçi ve referans gösterilen bir kütüphane olmaktır.</p>
 			<p>Kullanıcı memnuniyetini en üst düzeyde tutarak, teknolojik gelişmeleri yakından takip eden ve zengin bilgi kaynaklarıyla üniversitemizin akademik hedeflerine ulaşmasında kilit rol oynayan bir bilgi merkezi olmayı hedeflemekteyiz.</p>
 		</div>

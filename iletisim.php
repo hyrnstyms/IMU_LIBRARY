@@ -1,7 +1,6 @@
 <html>
 	<head>
 		<title>İMÜ Kütüphanesi - İletişim</title>
-		<link rel="shortcut icon" type="image/png" href="/favicon.ico">
 		<link rel="stylesheet" href="css/genel.css">
 	</head>
 	
@@ -17,10 +16,10 @@
 			
 			<div id="menu">
 				<ul>
-					<li><a href="index.html">Ana Sayfa</a></li>
-					<li><a href="hakkimizda.html">Hakkımızda</a></li>
-					<li><a href="misyon-vizyon.html">Misyon & Vizyon</a></li>
-					<li><a href="iletisim.html">İletişim</a></li>
+                    <li><a href="index.php">Ana Sayfa</a></li>
+					<li><a href="hakkimizda.php">Hakkımızda</a></li>
+					<li><a href="misyon-vizyon.php">Misyon & Vizyon</a></li>
+					<li><a href="iletisim.php">İletişim</a></li>
 				</ul>
 			</div>
 		</div>
