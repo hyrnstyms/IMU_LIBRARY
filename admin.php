@@ -53,10 +53,11 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_rol'] != 'admin') {
 			</style>
 			
 			<div class="admin-buttons">
-				<a href="kitap_yonet.php">Kitap Ekle / Sil</a>
-				<a href="uyeler_yonet.php">Üyeleri Yönet</a>
-				<a href="#">Duyuru Yayınla</a>
-				<a href="#">Ödünç Verme İşlemleri</a>
+				<a href="kitap_yonet.php">Kitap Ekle / Sil/Güncelle</a>
+				<a href="uyeler_yonet.php">Üyeleri Yönet(Sil/Engelle)</a>
+				<a href="iade_yonet.php">Ödünç/İade Yönetimi</a>
+				
+                <a href="#">Duyuru Yayınla</a>
 				<a href="#">Raporlar</a>
 				<a href="#">Ayarlar</a>
 			</div>
