@@ -165,19 +165,129 @@ $kitaplar = $db->query("SELECT * FROM kitaplar ORDER BY id DESC")->fetchAll(PDO:
                     <td><?php echo htmlspecialchars($kitap['yazar']); ?></td>
                     <td><?php echo $kitap['stok_adeti']; ?></td>
                     <td>
+                        <a href="kitap_guncelle.php?id=<?php echo $kitap['id']; ?>" class="btn-durum aktif" style="margin-right: 5px;">Güncelle</a>
+                        
                         <a href="kitap_yonet.php?sil_id=<?php echo $kitap['id']; ?>" class="btn-sil" onclick="return confirm('Bu kitabı silmek istediğinize emin misiniz?');">Sil</a>
-                        </td>
+                    </td>
                 </tr>
                 <?php endforeach; ?>
+                ```
 
-                <?php if (empty($kitaplar)): ?>
-                <tr>
-                    <td colspan="5" style="text-align: center; color: #777;">Kayıtlı kitap bulunamadı.</td>
-                </tr>
-                <?php endif; ?>
-            </tbody>
-        </table>
+**b) `kitap_guncelle.php` (Yeni Dosya)**
+`IMU_LIBRARY` klasörünün içine **`kitap_guncelle.php`** adında **yeni bir dosya** oluştur ve aşağıdaki kodu içine yapıştır. Bu dosya, `UPDATE` işlemini yapacak.
 
+```php
+<?php
+session_start();
+require 'db.php'; // Veritabanı bağlantımız
+
+// GÜVENLİK: Sadece adminler bu sayfayı görebilir
+if (!isset($_SESSION['user_id']) || $_SESSION['user_rol'] != 'admin') {
+    header("Location: index.php");
+    exit;
+}
+
+$message = '';
+$message_type = 'success';
+$kitap = null;
+
+// İŞLEM 1: FORM GÖNDERİLDİYSE (UPDATE)
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    try {
+        $stmt = $db->prepare("UPDATE kitaplar SET kitap_adi = ?, yazar = ?, stok_adeti = ? WHERE id = ?");
+        $stmt->execute([
+            $_POST['kitap_adi'],
+            $_POST['yazar'],
+            $_POST['stok_adeti'],
+            $_POST['id'] // Formdaki gizli 'id' alanı
+        ]);
+        
+        // Başarı mesajı ayarla ve listeleme sayfasına yönlendir
+        $_SESSION['message'] = "Kitap başarıyla güncellendi!";
+        header("Location: kitap_yonet.php");
+        exit;
+
+    } catch (PDOException $e) {
+        $message = "Hata: " . $e->getMessage();
+        $message_type = "error";
+    }
+}
+
+
+// İŞLEM 2: SAYFA İLK YÜKLENDİĞİNDE (READ)
+// Formu doldurmak için kitabın mevcut bilgilerini çek
+if (isset($_GET['id'])) {
+    try {
+        $stmt = $db->prepare("SELECT * FROM kitaplar WHERE id = ?");
+        $stmt->execute([$_GET['id']]);
+        $kitap = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$kitap) {
+            // Kitap bulunamadıysa
+            $_SESSION['message'] = "Hata: Kitap bulunamadı!";
+            header("Location: kitap_yonet.php");
+            exit;
+        }
+    } catch (PDOException $e) {
+        $message = "Hata: " . $e->getMessage();
+        $message_type = "error";
+    }
+} else {
+    // ID yoksa sayfayı terk et
+    header("Location: kitap_yonet.php");
+    exit;
+}
+
+?>
+<html>
+<head>
+    <title>Kitap Güncelle - Admin Paneli</title>
+    <link rel="stylesheet" href="css/genel.css">
+</head>
+<body class="body">
+<div id="container">
+    <div id="header">
+        <div id="logo">
+            <a target="_blank" href="http:www.medeniyet.edu.tr"><img style="margin-top:15px" src="logo.png" alt="imü logo"></a>
+        </div>
+        <div id="menu">
+            <ul>
+                <li><a href="kitap_yonet.php">Kitap Yönetimine Dön</a></li>
+                <li><a href="logout.php" style="background-color: #c9302c; color:white;">Güvenli Çıkış</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="content">
+        <h1 class="content-title">Kitap Güncelle</h1>
+
+        <?php if ($message): ?>
+            <p style="color: <?php echo $message_type == 'error' ? 'red' : 'green'; ?>; font-weight: bold; text-align: center;">
+                <?php echo $message; ?>
+            </p>
+        <?php endif; ?>
+
+        <div class="form-container" style="text-align: left; margin: 20px auto;">
+            <h2>"<?php echo htmlspecialchars($kitap['kitap_adi']); ?>" Düzenle</h2>
+            
+            <form action="kitap_guncelle.php" method="POST">
+                <input type="hidden" name="id" value="<?php echo $kitap['id']; ?>">
+                
+                <div class="form-group">
+                    <label for="kitap_adi">Kitap Adı:</label>
+                    <input type="text" id="kitap_adi" name="kitap_adi" value="<?php echo htmlspecialchars($kitap['kitap_adi']); ?>" required>
+                </div>
+                <div class="form-group">
+                    <label for="yazar">Yazar:</label>
+                    <input type="text" id="yazar" name="yazar" value="<?php echo htmlspecialchars($kitap['yazar']); ?>" required>
+                </div>
+                <div class="form-group">
+                    <label for="stok_adeti">Stok:</label>
+                    <input type="number" id="stok_adeti" name="stok_adeti" value="<?php echo $kitap['stok_adeti']; ?>" required>
+                </div>
+                <button type="submit" class="btn">Güncelle</button>
+            </form>
+        </div>
     </div>
     
     <div id="footer">

@@ -13,6 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     try {
         // SQL Injection saldırılarını önlemek için 'prepared statement' kullanıyoruz
+        // YENİ: 'durum' sütununu da çekiyoruz
         $stmt = $db->prepare("SELECT * FROM kullanicilar WHERE kulad = ?");
         $stmt->execute([$kulad]);
         $kullanici = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -21,7 +22,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // 2. Bulunduysa, girilen şifre veritabanındaki hash'li şifre ile eşleşiyor mu?
         if ($kullanici && password_verify($sifre, $kullanici['sifre'])) {
             
-            // BAŞARILI GİRİŞ!
+            // **** YENİ GÜVENLİK KONTROLÜ (Adım 3) ****
+            // Kullanıcı bulundu AMA durumu 'pasif' mi?
+            if ($kullanici['durum'] == 'pasif') {
+                $_SESSION['login_error'] = "Hesabınız askıya alınmıştır. Lütfen yönetici ile iletişime geçin.";
+                header("Location: index.php");
+                exit;
+            }
+            // **** KONTROL BİTTİ ****
+
+
+            // BAŞARILI GİRİŞ! (Aktif kullanıcı)
             // Kullanıcı bilgilerini session'a kaydediyoruz (Hocanın istediği)
             $_SESSION['user_id'] = $kullanici['id'];
             $_SESSION['user_kulad'] = $kullanici['kulad'];
@@ -38,8 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
 
         } else {
-            // HATALI GİRİŞ
-            // Hata mesajını session'a kaydet ve login sayfasına geri dön
+            // HATALI GİRİŞ (Kullanıcı adı veya şifre zaten yanlıştı)
             $_SESSION['login_error'] = "Kullanıcı adı veya şifre hatalı!";
             header("Location: index.php");
             exit;

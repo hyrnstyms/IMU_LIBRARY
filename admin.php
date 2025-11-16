@@ -54,7 +54,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_rol'] != 'admin') {
 			
 			<div class="admin-buttons">
 				<a href="kitap_yonet.php">Kitap Ekle / Sil</a>
-				<a href="#">Üyeleri Yönet</a>
+				<a href="uyeler_yonet.php">Üyeleri Yönet</a>
 				<a href="#">Duyuru Yayınla</a>
 				<a href="#">Ödünç Verme İşlemleri</a>
 				<a href="#">Raporlar</a>
